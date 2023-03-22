@@ -36,7 +36,6 @@ def create_state_regression_models(combined_data):
 
 def combine_data(shopify_data, weather_data, facebook_data):
     combined_data = pd.DataFrame() # Create an empty DataFrame to store the combined data
-
     # Extract relevant data from the Shopify, Weather, and Facebook data and add it to the combined_data DataFrame
     # This process may vary depending on the structure of the data returned by the APIs
 

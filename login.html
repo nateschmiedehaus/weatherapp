@@ -59,6 +59,8 @@
             document.querySelector('.container').style.display = 'none';
             document.querySelector('#dashboard').style.display = 'block';
             document.querySelector('#logout').style.display = 'block';
+            fetchDashboardData();  // Fetch the dashboard data when the user logs in
+
             fetchMetrics();  // Fetch the metrics when the user logs in
         } else {
             alert('Invalid email or password');
