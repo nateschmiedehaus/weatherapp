@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, url_for, flash
 from flask import Flask, render_template
-from api_helpers import get_facebook_data, get_shopify_data
+from api_helpers import get_facebook_data, get_shopify_datal, update_facebook_ad_spend
 
 
 def get_shopify_data(api_key, password, store_name):
@@ -121,8 +121,10 @@ def adjust_ad_spend():
     # Get the required data from the request
     ad_spend_data = request.json
 
-    # Replace with the actual code to update the ad spend using the Facebook API
-    update_facebook_ad_spend(ad_s
+# Replace with the actual code to update the ad spend using the Facebook API
+    result = update_facebook_ad_spend(ad_spend_data, facebook_access_token)
+
+    return jsonify(result)
 
 #step #8
 app = Flask(__name__)
