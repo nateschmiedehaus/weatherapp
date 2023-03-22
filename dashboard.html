@@ -1,0 +1,86 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Your Brand</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Models</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Ad Accounts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>User Dashboard</h2>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">State Models</h5>
+                        <p class="card-text">View and manage state models for predicting conversion rates and total orders.</p>
+                        <a href="#" class="btn btn-primary">Go to State Models</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Facebook Ad Accounts</h5>
+                        <p class="card-text">Manage your Facebook ad accounts and view performance metrics.</p>
+                        <a href="#" class="btn btn-primary">Go to Ad Accounts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="metrics" style="display:none;">
+        <h3>Model Performance Metrics</h3>
+        <p>Mean Squared Error: <span id="mse"></span></p>
+        <p>Root Mean Squared Error: <span id="rmse"></span></p>
+        <p>R-squared: <span id="r2"></span></p>
+    </div>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function fetchMetrics() {
+            $.getJSON("/api/metrics", function(data) {
+                $("#mse").text(data.mse.toFixed(2));
+                $("#rmse").text(data.rmse.toFixed(2));
+                $("#r2").text(data.r2.toFixed(2));
+                $("#metrics").show();
+            });
+        }
+    </script>
+    <script>
+        // Add any necessary JavaScript code here.
+
+    </script>
+</body>
+</html>
