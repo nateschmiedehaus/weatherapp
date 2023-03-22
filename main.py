@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, url_for, flash
 from flask import Flask, render_template
+from api_helpers import get_facebook_data, get_shopify_data
 
 
 def get_shopify_data(api_key, password, store_name):
@@ -115,10 +116,13 @@ def preprocess_data(shopify_data, weather_data, facebook_data):
     # This function should be implemented based on the structure of the data returned by the APIs
     pass
 
-def adjust_ad_spend(state_models, increase_pct, decrease_pct):
-    # Automatically increase, decrease, or stop ad spend for a given state's ad set based on weather information
-    # Implement this function based on the structure of the state regression models and the provided percentages
-    pass
+@app.route('/api/adjust_ad_spend', methods=['POST'])
+def adjust_ad_spend():
+    # Get the required data from the request
+    ad_spend_data = request.json
+
+    # Replace with the actual code to update the ad spend using the Facebook API
+    update_facebook_ad_spend(ad_s
 
 #step #8
 app = Flask(__name__)
@@ -230,8 +234,17 @@ def metrics():
 def dashboard_data():
     access_token = os.getenv("FACEBOOK_ACCESS_TOKEN")
     ad_account_id = os.getenv("FACEBOOK_AD_ACCOUNT_ID")
+     # Replace with actual user credentials from the database
+    facebook_access_token = "user_facebook_access_token"
+    shopify_api_key = "user_shopify_api_key"
+    shopify_password = "user_shopify_password"
+    shopify_shop_name = "user_shopify_shop_name"
 
-    locations = fetch_facebook_locations(access_token, ad_account_id)
+    facebook_data = get_facebook_data(facebook_access_token)
+    shopify_data = get_shopify_data(shopify_api_key, shopify_password, shopify_shop_name)
+
+
+    locations = fetch_facebook_locations(facebook_access_token, facebook_ad_account_id)
 
     data = {
         'locations': locations,
