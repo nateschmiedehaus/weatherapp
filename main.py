@@ -28,6 +28,34 @@ def get_facebook_data(access_token, account_id):
     facebook_response = requests.get(facebook_url)
     return facebook_response.json()
 
+
+import os
+from facebook_business.api import FacebookAdsApi
+
+def fetch_facebook_locations(access_token, ad_account_id):
+    FacebookAdsApi.init(access_token=access_token)
+    insights_params = {
+        'fields': ['targeting'],
+        'level': 'ad',
+    }
+    url = f"{ad_account_id}/insights"
+    response = FacebookAdsApi.get(url, params=insights_params)
+    data = response.json()
+
+    # Extract the targeted locations
+    locations = []
+    for ad in data:
+        targeting = ad['targeting']
+        if 'geo_locations' in targeting:
+            geo_locations = targeting['geo_locations']
+            if 'regions' in geo_locations:
+                for region in geo_locations['regions']:
+                    locations.append(region['name'])
+
+    # Remove duplicates and return the top 20 locations
+    locations = list(set(locations))
+    return locations[:20]
+
 def create_state_regression_models(combined_data):
     # Create regression models for each state and the top 20 metro areas
     # This function should be implemented based on the structure of the preprocessed data
@@ -197,6 +225,19 @@ if __name__ == "__main__":
 @app.route('/api/metrics')
 def metrics():
     return {'mse': mse, 'rmse': rmse, 'r2': r2}
+
+@app.route('/api/dashboard_data')
+def dashboard_data():
+    access_token = os.getenv("FACEBOOK_ACCESS_TOKEN")
+    ad_account_id = os.getenv("FACEBOOK_AD_ACCOUNT_ID")
+
+    locations = fetch_facebook_locations(access_token, ad_account_id)
+
+    data = {
+        'locations': locations,
+        # Add other data sources here as needed
+    }
+    return data
 
 
 # Configure the database

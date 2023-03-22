@@ -55,6 +55,11 @@
                         <p class="card-text">Manage your Facebook ad accounts and view performance metrics.</p>
                         <a href="#" class="btn btn-primary">Go to Ad Accounts</a>
                     </div>
+                    <div id="targeted-locations" class="container">
+                        <h2>Targeted Locations</h2>
+                        <ul id="locations-list"></ul>
+                      </div>
+                      
                 </div>
             </div>
         </div>
@@ -75,9 +80,39 @@
                 $("#rmse").text(data.rmse.toFixed(2));
                 $("#r2").text(data.r2.toFixed(2));
                 $("#metrics").show();
+                
             });
         }
     </script>
+    <script>
+        function fetchDashboardData() {
+
+            $.getJSON("/api/dashboard_data", function(data) {
+            updateTargetedLocations(data.locations);
+            // Update other dashboard elements here as needed
+        });
+    }
+
+    function updateTargetedLocations(locations) {
+        let locationsList = document.querySelector("#locations-list");
+        locationsList.innerHTML = "";
+
+        locations.forEach(location => {
+            let listItem = `<li>${location}</li>`;
+            locationsList.innerHTML += listItem;
+        });
+    }
+
+            $.getJSON("/api/dashboard_data", function(data) {
+                // Update the dashboard elements with the fetched data
+                // Replace this with code to update your specific dashboard elements
+                updateGraph(data.graph_data);
+                updateOptionSelectors(data.option_selectors);
+                updateModelInfo(data.model_info);
+            });
+        }
+    </script>
+    
     <script>
         // Add any necessary JavaScript code here.
 
